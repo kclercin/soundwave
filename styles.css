@@ -1,0 +1,230 @@
+	.circle{
+			width: 200px;
+			height: 200px;
+			border-top-left-radius : 48%;
+			border-top-right-radius : 48%;
+			border-bottom-left-radius : 48%;
+			border-bottom-right-radius : 48%;
+			position: absolute;
+			background-color: black;
+			border: 20px solid black;
+		}
+
+		.circle2{
+			width: 200px;
+			height: 200px;
+			border-top-left-radius : 48%;
+			border-top-right-radius : 48%;
+			border-bottom-left-radius : 48%;
+			border-bottom-right-radius : 48%;
+			z-index: 1;
+      transition: transform .1s;
+		}
+
+
+		.red-container .circle2 {
+			background-color: rgb(255, 0, 0);
+		}
+		.black-container .circle2 {
+			background-color: rgb(0, 0, 0);
+			z-index: 3;
+		}
+		.blue-container .circle2 {
+			background-color: rgb(0, 194, 201);
+			z-index: 2;
+		}
+
+		.circle2.small {
+			width: 150px;
+			height: 150px;
+		}
+		.circle2.height {
+			width: 150px;
+			height: 50px;
+		}
+		.circle2-bis{
+			top: 15px;
+			left: 5px;
+			width: 300px;
+			height: 300px;
+			border-top-left-radius : 48%;
+			border-top-right-radius : 48%;
+			border-bottom-left-radius : 48%;
+			border-bottom-right-radius : 48%;
+			position: absolute;
+			border: 20px solid rgba(255,0,255,0.25);
+		}
+
+		@-webkit-keyframes rotating2 {
+				0%{
+						transform: rotate(0deg);
+				}
+				100%{
+						transform: rotate(-360deg);
+				}
+		}
+
+		@-webkit-keyframes skew1 {
+			0%{
+				transform: skewX(0deg);
+				transform: skewY(0deg);
+			}
+			50% {
+				transform: skewX(20deg);
+				transform: skewY(30deg);
+			}
+			100%{
+				transform: skewX(0deg);
+				transform: skewY(0deg);
+			}
+		}
+		@-webkit-keyframes skew2 {
+			0%{
+				transform: skewX(0deg);
+				transform: skewY(0deg);
+			}
+			50% {
+				transform: skewX(20deg);
+				transform: skewY(25deg);
+			}
+			100%{
+				transform: skewX(0deg);
+				transform: skewY(0deg);
+			}
+		}
+
+		@-webkit-keyframes skew2-r {
+			0%{
+				transform: skewX(0deg);
+				transform: skewY(10deg);
+			}
+			50% {
+				transform: skewX(0deg);
+				transform: skewY(-25deg);
+			}
+			100%{
+				transform: skewX(0deg);
+				transform: skewY(10deg);
+			}
+		}
+
+
+		@-webkit-keyframes skew3 {
+			0%{
+				transform: skewX(0deg);
+				transform: skewY(0deg);
+			}
+			50% {
+				transform: skewX(20deg);
+				transform: skewY(40deg);
+			}
+			100%{
+				transform: skewX(0deg);
+				transform: skewY(0deg);
+			}
+		}
+
+		@-webkit-keyframes rotating1 {
+			0%{
+				transform: rotate(0deg);
+			}
+			100%{
+				transform: rotate(360deg);
+			}
+		}
+		@-webkit-keyframes rotating2 {
+			0%{
+				transform: rotate(0deg);
+			}
+			100%{
+				transform: rotate(-360deg);
+			}
+		}
+
+		@-webkit-keyframes full-rotate {
+			0%{
+				transform: rotate(0deg);
+			}
+			100%{
+				transform: rotate(360deg);
+			}
+		}
+
+
+
+
+		body {
+			padding: 100px
+		}
+
+		.p-absolute {
+			position: absolute;
+		}
+
+		.corners2 {
+
+				/* animation: skew1 1s linear infinite; */
+		}
+
+		.corners3 {
+
+				/* animation: skew2 1s linear infinite; */
+		}
+		.corners4 {
+
+				/* animation: skew3 1s linear infinite; */
+		}
+
+		.corners3.inverted {
+				/* animation: skew2-r 1s linear infinite; */
+		}
+
+		.rotate-90 {
+			transform: rotate(90deg)
+		}
+		.red-circle {
+			width: 205px;
+			height: 205px;
+			border-radius: 205px;
+			background-color: red;
+		}
+		.white-circle {
+			position: absolute;
+			width: 200px;
+			height: 200px;
+			z-index: 4;
+			border-radius: 200px;
+			background-color: white;
+			border: 3px solid black;
+		}
+		.container {
+			position: relative;
+			display: block;
+			margin: 0 auto;
+			width: 400px;
+			height: 400px;
+		}
+		.red-container, .black-container, .blue-container {
+			position: absolute;
+			width: 200px;
+			height: 200px;
+			z-index: 1;
+
+		}
+
+		.red-container {
+			animation: rotating1 14s linear infinite;
+		}
+		.black-container {
+			animation: rotating2 18s linear infinite;
+		}
+		.blue-container {
+			animation: rotating1 25s linear infinite;
+		}
+
+
+		.container {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
