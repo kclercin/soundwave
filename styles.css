@@ -101,29 +101,11 @@ svg path {
   position: absolute;
   z-index: 100;
 }
-.red-circle {
-  width: 260px;
-  height: 260px;
-  border-radius: 260px;
-  background-color: #FF0000;
-}
 .black-circle {
-  width: 250px;
-  height: 250px;
-  border-radius: 250px;
+  width: 200px;
+  height: 200px;
+  border-radius: 200px;
   background-color: #000;
-}
-.blue-circle {
-  width: 256px;
-  height: 256px;
-  border-radius: 256px;
-  background-color: #00F3FF;
-}
-.white-circle {
-  width: 252px;
-  height: 252px;
-  border-radius: 252px;
-  background-color: #FFF;
 }
 
 .container {

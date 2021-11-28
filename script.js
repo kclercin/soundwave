@@ -129,7 +129,7 @@ window.onload = function () {
         frequencyArray= frequencyArray.slice(0, numPoints)
         let invertedPoints = []
         var points = frequencyArray.reduce((acc, value, index) => {
-          if (index > 1 && index % 20 === 0) {
+          if ((index > 0 && index % 15 === 0) || index === 1) {
             const theta = index * angleStep;
             var length = Math.floor(value) - (Math.floor(value) % 5)
             length = length * 1.5 * ratio;
