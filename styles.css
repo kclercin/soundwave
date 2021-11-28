@@ -102,9 +102,10 @@ svg path {
   z-index: 100;
 }
 .black-circle {
-  width: 200px;
-  height: 200px;
-  border-radius: 200px;
+  width: 250px;
+  height: 250px;
+  border-radius: 250px;
+  border: 1px solid #FFF;
   background-color: #000;
 }
 

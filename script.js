@@ -4,6 +4,9 @@ window.onload = function () {
   var ratio = 1;
   var whiteMask = $('.white');
   var blueMask = $('.blue');
+  var complexity = 15;
+  var maxLength = 250;
+  var blueDelay = 30;
   var h = document.getElementsByTagName('h1')[0];
   var redHistory = [];
 
@@ -29,6 +32,21 @@ window.onload = function () {
   $("#ratio").on("change", function() {
     const value = $(this).val();
     ratio = parseFloat(value, 10) || 1;
+  })
+
+  $("#blueDelay").on("change", function() {
+    const value = $(this).val();
+    blueDelay = parseFloat(value, 10);
+  })
+
+  $("#maxLength").on("change", function() {
+    const value = $(this).val();
+    maxLength = parseFloat(value, 10) || 250;
+  })
+
+  $("#complexity").on("change", function() {
+    const value = $(this).val();
+    complexity = parseFloat(value, 10) || 15;
   })
 
   function formatPoints(points, close) {
@@ -121,7 +139,11 @@ window.onload = function () {
     var p = document.createElementNS('http://www.w3.org/2000/svg', 'path');
 
     $("svg").append(p)
-
+    function getRandomInt(min, max) {
+      const delta = max - min;
+      var number = Math.floor(delta) + min;
+      return number;
+    }
     var doDraw = function () {
         requestAnimationFrame(doDraw);
         analyser.getByteFrequencyData(frequencyArray);
@@ -130,10 +152,13 @@ window.onload = function () {
         let invertedPoints = []
         var index = 0;
         var points = frequencyArray.reduce((acc, value) => {
-          if ((index % 20 === 0) || (index < 20 && index % 5 === 0)) {
+          if (index % complexity === 0) {
             const theta = index * angleStep;
             var length = Math.floor(value) - (Math.floor(value) % 5)
             length = length * 1.5 * ratio;
+            if(index === 0) length = 125
+            if(length < 120) length = getRandomInt(120, 130);
+            if(length > maxLength) length = maxLength;
             const yRadius = Math.sin(theta) * length;
             const xRadius = Math.cos(theta) * length;
             const x = offset + xRadius
@@ -167,7 +192,7 @@ window.onload = function () {
         redMask.children("path").attr('d', redPath)
         whiteMask.children("path").attr('d', whitePath)
 
-        if (redHistory.length >= 30) {
+        if (redHistory.length >= blueDelay) {
           const bluePath = redHistory.splice(0, 1);
           blueMask.children("path").attr('d', bluePath)
         }
