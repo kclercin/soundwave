@@ -7,6 +7,16 @@ window.onload = function () {
   let maxDistortionBlue = 30;
   let maxDistortionRed = 30;
 
+  function toggleFullScreen() {
+    if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+    } else {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      }
+    }
+  }
+
   function getRandomInt(max) {
     return Math.floor(Math.random() * max);
   }
@@ -44,6 +54,9 @@ window.onload = function () {
   $(document).on("keypress", function(e) {
     if(e.key == "c") {
       $("#configPanel").toggleClass("close")
+    }
+    if(e.key == "f") {
+      toggleFullScreen();
     }
   })
 
