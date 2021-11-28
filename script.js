@@ -1,8 +1,8 @@
 window.onload = function () {
   let ratio = 1;
-  let blueRatio = 1.1;
-  let blackRatio = 1;
-  let redRatio = 1.1;
+  let blueRatio = 1.5;
+  let blackRatio = 1.5;
+  let redRatio = 1.5;
   let maxDistortionBlack = 30;
   let maxDistortionBlue = 30;
   let maxDistortionRed = 30;
