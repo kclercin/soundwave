@@ -1,4 +1,68 @@
-	.circle{
+.row {
+  display: flex;
+  margin-bottom: 10px
+}
+
+.config-panel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;
+  padding: 15px;
+  background-color: rgb(255, 255, 255);
+  color: rgba(0, 0, 0, 0.87);
+  transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  transition: height 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  transition: padding-top 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  transition: padding-bottom 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  border-radius: 4px;
+  box-shadow: rgb(0 0 0 / 20%) 0px 2px 1px -1px, rgb(0 0 0 / 14%) 0px 1px 1px 0px, rgb(0 0 0 / 12%) 0px 1px 3px 0px;
+  overflow: hidden;
+  min-width: 275px;
+}
+
+.config-panel.close {
+  padding-top: 0;
+  padding-bottom: 0;
+  height: 0;
+}
+
+.control-group {
+  padding: 0 15px;
+}
+
+.control-group label {
+  color: rgba(0, 0, 0, 0.6);
+  font-family: Roboto, Helvetica, Arial, sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.4375em;
+  letter-spacing: 0.00938em;
+  padding: 0px;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color 200ms cubic-bezier(0, 0, 0.2, 1) 0ms, transform 200ms cubic-bezier(0, 0, 0.2, 1) 0ms, max-width 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+}
+
+.control-group .input-control {
+  border-radius: 4px;
+  position: relative;
+  background-color: rgb(252, 252, 251);
+  border: 1px solid rgb(206, 212, 218);
+  font-size: 16px;
+  width: auto;
+  padding: 10px 12px;
+  transition: border-color 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, background-color 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+}
+
+.control-group .text-right {
+  text-align: right;
+}
+
+.circle{
 			width: 200px;
 			height: 200px;
 			border-top-left-radius : 48%;
@@ -154,7 +218,8 @@
 
 
 		body {
-			padding: 100px
+			padding: 0;
+      margin: 0;
 		}
 
 		.p-absolute {
@@ -201,8 +266,8 @@
 			position: relative;
 			display: block;
 			margin: 0 auto;
-			width: 400px;
-			height: 400px;
+			height: 100%;
+      width: 100%;
 		}
 		.red-container, .black-container, .blue-container {
 			position: absolute;

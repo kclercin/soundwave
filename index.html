@@ -1,12 +1,5 @@
 <html>
   <head>
-    <script>
-      /*
-        Un multiplicateur peut être appliqué en modifiant cette variable
-        /!\ Il vaut mieux aller doucement, par exemple, par pas de 0.1
-      */
-      const ratio = 1;
-    </script>
 
     <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
       crossorigin="anonymous"></script>
@@ -17,6 +10,56 @@
   </head>
 
 	<body>
+    <div id="configPanel" class="config-panel close">
+      <div class="row">
+        <div class="control-group">
+          <label>
+            Ratio général
+          </label>
+          <input id="ratio" class="input-control text-right" type="text" value="1" />
+        </div>
+        <div class="control-group">
+          <label>
+            Ratio noir
+          </label>
+          <input id="blackRatio" class="input-control text-right" type="text" value="1" />
+        </div>
+        <div class="control-group">
+          <label>
+            Ratio rouge
+          </label>
+          <input id="redRatio" class="input-control text-right" type="text" value="1.1" />
+        </div>
+        <div class="control-group">
+          <label>
+            Ratio bleu
+          </label>
+          <input id="blueRatio" class="input-control text-right" type="text" value="1.1" />
+        </div>
+
+      </div>
+      <div class="row">
+        <div class="control-group">
+          <label>
+            Distortion max noir
+          </label>
+          <input id="maxDistortionBlack" class="input-control text-right" type="text" value="30" />
+        </div>
+        <div class="control-group">
+          <label>
+            Distortion max rouge
+          </label>
+          <input id="maxDistortionRed" class="input-control text-right" type="text" value="30" />
+        </div>
+        <div class="control-group">
+          <label>
+            Distortion max bleu
+          </label>
+          <input id="maxDistortionBlue" class="input-control text-right" type="text" value="30" />
+        </div>
+
+      </div>
+    </div>
 		<div class="container">
 
 			<div class="blue-container">
