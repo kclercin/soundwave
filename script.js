@@ -29,6 +29,11 @@ window.onload = function () {
     }
   })
 
+  $("#rotate").on("change", function(e) {
+    const checked = e.target.checked;
+    $('svg').toggleClass('rotate');
+  });
+
   $("#ratio").on("change", function() {
     const value = $(this).val();
     ratio = parseFloat(value, 10) || 1;
@@ -154,8 +159,8 @@ window.onload = function () {
         var points = frequencyArray.reduce((acc, value) => {
           if (index % complexity === 0) {
             const theta = index * angleStep;
-            var length = Math.floor(value) - (Math.floor(value) % 5)
-            length = length * 1.5 * ratio;
+            var length = Math.floor(value)
+            length = length * 1.3 * ratio;
             if(index === 0) length = 125
             if(length < 120) length = getRandomInt(120, 130);
             if(length > maxLength) length = maxLength;
@@ -196,7 +201,6 @@ window.onload = function () {
           const bluePath = redHistory.splice(0, 1);
           blueMask.children("path").attr('d', bluePath)
         }
-        //delayPath(white, path, 200);
     }
     doDraw();
   }
