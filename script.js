@@ -78,7 +78,7 @@ window.onload = function () {
   return points.flat();
   }
 
-  function spline(points = [], tension = 1, close = false, cb) {
+  function spline(points = [], tension = 1, close = true, cb) {
     points = formatPoints(points, close);
 
     const size = points.length;
@@ -137,6 +137,7 @@ window.onload = function () {
 
     const numPoints = 200;
     const offset = 500;
+    const lengthOffset = 100;
     const angleStep = (Math.PI) / numPoints;
 
     var frequencyArray = new Uint8Array(analyser.frequencyBinCount);
@@ -144,63 +145,67 @@ window.onload = function () {
     var p = document.createElementNS('http://www.w3.org/2000/svg', 'path');
 
     $("svg").append(p)
+
     function getRandomInt(min, max) {
       const delta = max - min;
-      var number = Math.floor(delta) + min;
+      var number = Math.floor(Math.random() * delta) + min;
       return number;
     }
+
+
     var doDraw = function () {
-        requestAnimationFrame(doDraw);
-        analyser.getByteFrequencyData(frequencyArray);
+      requestAnimationFrame(doDraw);
+      analyser.getByteFrequencyData(frequencyArray);
+      frequencyArray= frequencyArray.slice(0, numPoints)
+      let invertedPoints = []
+      var index = 0;
+      var points = frequencyArray.reduce((acc, value) => {
+        if ((index % complexity === 0) ) {
+          const theta = index * angleStep;
 
-        frequencyArray= frequencyArray.slice(0, numPoints)
-        let invertedPoints = []
-        var index = 0;
-        var points = frequencyArray.reduce((acc, value) => {
-          if (index % complexity === 0) {
-            const theta = index * angleStep;
-            var length = Math.floor(value)
-            length = length * 1.3 * ratio;
-            if(index === 0) length = 125
-            if(length < 120) length = getRandomInt(120, 130);
-            if(length > maxLength) length = maxLength;
-            const yRadius = Math.sin(theta) * length;
-            const xRadius = Math.cos(theta) * length;
-            const x = offset + xRadius
-            const y = offset + yRadius;
-            const invertedY = offset - yRadius;
-            invertedPoints.push([x, invertedY])
-            acc.push([x, y]);
-          }
-          index++;
-          return acc;
-        }, []);
-        points = points.concat(invertedPoints.reverse());
-        const redPoints = points.reduce((acc, value) => {
-          const x = ((value[0] - offset)) + offset
-          const y = ((value[1] - offset)) + offset
+          var length = Math.floor(value) * 0.7 + lengthOffset
+
+          length = length * ratio;
+          if(length < 130) length = 130;
+          if(length > maxLength) length = maxLength;
+          const yRadius = Math.sin(theta) * length;
+          const xRadius = Math.cos(theta) * length;
+
+
+          const x = offset + xRadius
+          const y = offset + yRadius;
+          const invertedY = offset - yRadius;
+          invertedPoints.push([x, invertedY])
           acc.push([x, y]);
-          return acc;
-        }, []);
-        const redPath = spline(redPoints, 1, true);
-
-
-        const whitePoints = points.reduce((acc, value) => {
-          const x = ((value[0] - offset) / 1.2) + offset
-          const y = ((value[1] - offset) / 1.2) + offset
-          acc.push([x, y]);
-          return acc;
-        }, [])
-        const whitePath = spline(whitePoints, 1, true);
-        redHistory.push(redPath);
-
-        redMask.children("path").attr('d', redPath)
-        whiteMask.children("path").attr('d', whitePath)
-
-        if (redHistory.length >= blueDelay) {
-          const bluePath = redHistory.splice(0, 1);
-          blueMask.children("path").attr('d', bluePath)
         }
+        index++;
+        return acc;
+      }, []);
+      points = points.concat(invertedPoints.reverse());
+      const redPoints = points.reduce((acc, value) => {
+        const x = ((value[0] - offset)) + offset
+        const y = ((value[1] - offset)) + offset
+        acc.push([x, y]);
+        return acc;
+      }, []);
+      const redPath = spline(redPoints);
+
+      const whitePoints = points.reduce((acc, value) => {
+        const x = ((value[0] - offset) / 1.2) + offset
+        let y = ((value[1] - offset) / 1.2) + offset
+        acc.push([x, y]);
+        return acc;
+      }, [])
+      const whitePath = spline(whitePoints);
+      redHistory.push(redPath);
+
+      redMask.children("path").attr('d', redPath)
+      whiteMask.children("path").attr('d', whitePath)
+
+      if (redHistory.length >= blueDelay) {
+        const bluePath = redHistory.splice(0, 1);
+        blueMask.children("path").attr('d', bluePath)
+      }
     }
     doDraw();
   }
