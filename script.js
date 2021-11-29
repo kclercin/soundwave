@@ -1,14 +1,17 @@
 window.onload = function () {
   "use strict";
   var redMask = $('.red');
-  var ratio = 1;
+  var ratio = 0.8;
   var whiteMask = $('.white');
   var blueMask = $('.blue');
-  var complexity = 15;
-  var maxLength = 250;
+  var complexity = 20;
+  var maxLength = 300;
   var blueDelay = 30;
   var h = document.getElementsByTagName('h1')[0];
   var redHistory = [];
+  const numPoints = 400;
+  const offset = 500;
+  const lengthOffset = 110;
 
   function toggleFullScreen() {
     if (!document.fullscreenElement) {
@@ -135,11 +138,6 @@ window.onload = function () {
     audioStream.connect(analyser);
     analyser.fftSize = 1024;
 
-    const numPoints = 200;
-    const offset = 500;
-    const lengthOffset = 100;
-    const angleStep = (Math.PI) / numPoints;
-
     var frequencyArray = new Uint8Array(analyser.frequencyBinCount);
 
     var p = document.createElementNS('http://www.w3.org/2000/svg', 'path');
@@ -152,6 +150,19 @@ window.onload = function () {
       return number;
     }
 
+    var adjustPoints = (points, ratio = 1) => {
+      const length = points.length;
+
+      return points.reduce((acc, value, index) => {
+        var pointRatio = 1;
+
+        var x = ((value[0] - offset) * ratio * pointRatio) + offset;
+        var y = ((value[1] - offset) * ratio * pointRatio) + offset;
+
+        acc.push([x, y]);
+        return acc;
+      }, [])
+    };
 
     var doDraw = function () {
       requestAnimationFrame(doDraw);
@@ -159,43 +170,42 @@ window.onload = function () {
       frequencyArray= frequencyArray.slice(0, numPoints)
       let invertedPoints = []
       var index = 0;
-      var points = frequencyArray.reduce((acc, value) => {
-        if ((index % complexity === 0) ) {
-          const theta = index * angleStep;
 
-          var length = Math.floor(value) * 0.7 + lengthOffset
-
-          length = length * ratio;
-          if(length < 130) length = 130;
-          if(length > maxLength) length = maxLength;
-          const yRadius = Math.sin(theta) * length;
-          const xRadius = Math.cos(theta) * length;
-
-
-          const x = offset + xRadius
-          const y = offset + yRadius;
-          const invertedY = offset - yRadius;
-          invertedPoints.push([x, invertedY])
-          acc.push([x, y]);
+      var lengths = frequencyArray.reduce((acc, value) => {
+        if (((index % complexity === 0) && index > complexity)) {
+          acc.push(Math.floor(value) * 0.8);
         }
         index++;
         return acc;
       }, []);
-      points = points.concat(invertedPoints.reverse());
-      const redPoints = points.reduce((acc, value) => {
-        const x = ((value[0] - offset)) + offset
-        const y = ((value[1] - offset)) + offset
+      lengths[0] = getRandomInt(lengths[1] - 10, lengths[1]);
+      index = 0;
+      var angleStep = (Math.PI) / lengths.length;
+      var points = lengths.reduce((acc, length, index) => {
+        const theta = index * angleStep;
+        length = length * ratio + lengthOffset
+        if(length < 130) length = 130;
+        if(length > maxLength) length = maxLength;
+        const yRadius = Math.sin(theta) * length;
+        const xRadius = Math.cos(theta) * length;
+
+        const x = offset + xRadius
+        const y = offset + yRadius;
+        const invertedY = offset - yRadius;
+        invertedPoints.push([x, invertedY])
+        index++;
         acc.push([x, y]);
+
         return acc;
       }, []);
+
+      points = points.concat(invertedPoints.reverse());
+
+      const redPoints = adjustPoints(points);
+
       const redPath = spline(redPoints);
 
-      const whitePoints = points.reduce((acc, value) => {
-        const x = ((value[0] - offset) / 1.2) + offset
-        let y = ((value[1] - offset) / 1.2) + offset
-        acc.push([x, y]);
-        return acc;
-      }, [])
+      const whitePoints = adjustPoints(points, 0.85);
       const whitePath = spline(whitePoints);
       redHistory.push(redPath);
 
