@@ -2,6 +2,7 @@
   <head>
     <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
       crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"
       integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30=" crossorigin="anonymous"></script>
     <link href="./styles.css" rel="stylesheet" />
@@ -13,13 +14,13 @@
         <label>
           Ratio général
         </label>
-        <input id="ratio" class="input-control text-right" type="text" value="0.9" />
+        <input id="ratio" class="input-control text-right" type="text" value="1.1" />
       </div>
       <div class="control-group">
         <label>
           Délai bleu
         </label>
-        <input id="blueDelay" class="input-control text-right" type="text" value="30" />
+        <input id="blueDelay" class="input-control text-right" type="text" value="10" />
       </div>
     </div>
     <div class="row">
@@ -28,12 +29,6 @@
           Hauteur max
         </label>
         <input id="maxLength" class="input-control text-right" type="text" value="300" />
-      </div>
-      <div class="control-group">
-        <label>
-          Complexité
-        </label>
-        <input id="complexity" class="input-control text-right" type="text" value="20" />
       </div>
       <div class="control-group">
         <label>

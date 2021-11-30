@@ -1,17 +1,17 @@
 window.onload = function () {
   "use strict";
   var redMask = $('.red');
-  var ratio = 0.8;
+  var ratio = 1.1;
   var whiteMask = $('.white');
   var blueMask = $('.blue');
-  var complexity = 20;
+  var complexity = 15;
   var maxLength = 300;
-  var blueDelay = 30;
+  var blueDelay = 10;
   var h = document.getElementsByTagName('h1')[0];
   var redHistory = [];
-  const numPoints = 400;
+  const numPoints = 255;
   const offset = 500;
-  const lengthOffset = 110;
+  const lengthOffset = 120;
 
   function toggleFullScreen() {
     if (!document.fullscreenElement) {
@@ -136,7 +136,8 @@ window.onload = function () {
     var audioStream = audioContent.createMediaStreamSource( stream );
     var analyser = audioContent.createAnalyser();
     audioStream.connect(analyser);
-    analyser.fftSize = 1024;
+    analyser.fftSize = 2048;
+    analyser.maxDecibels = 110;
 
     var frequencyArray = new Uint8Array(analyser.frequencyBinCount);
 
@@ -144,15 +145,7 @@ window.onload = function () {
 
     $("svg").append(p)
 
-    function getRandomInt(min, max) {
-      const delta = max - min;
-      var number = Math.floor(Math.random() * delta) + min;
-      return number;
-    }
-
     var adjustPoints = (points, ratio = 1) => {
-      const length = points.length;
-
       return points.reduce((acc, value, index) => {
         var pointRatio = 1;
 
@@ -163,24 +156,47 @@ window.onload = function () {
         return acc;
       }, [])
     };
+    function average(data) {
+        var sum = data.reduce(function(sum, value) {
+            return sum + value;
+        }, 0);
+        var avg = sum / data.length;
+        return avg;
+    }
+
+    function smooth(values, alpha = 1) {
+        var weighted = average(values) * alpha;
+        var smoothed = [];
+        for (var i in values) {
+            var curr = values[i];
+            var prev = smoothed[i - 1] || values[values.length - 1];
+            var next = curr || values[0];
+            var improved = Number(average([weighted, prev, curr, next]).toFixed(2));
+            smoothed.push(improved);
+        }
+        return smoothed;
+    }
+
 
     var doDraw = function () {
       requestAnimationFrame(doDraw);
       analyser.getByteFrequencyData(frequencyArray);
-      frequencyArray= frequencyArray.slice(0, numPoints)
       let invertedPoints = []
       var index = 0;
+      var ls = [];
+      for(var i = 0; i < numPoints; i++) {
+          ls.push(Math.floor(frequencyArray[i]) * 0.7);
+      }
+      var lengths = []
+      console.log(ls.length)
+      lengths = _.chunk(ls, complexity).map(values => {
+        var max = _.max(values);
+        return max;
+      });
+      //lengths = smooth(lengths)
 
-      var lengths = frequencyArray.reduce((acc, value) => {
-        if (((index % complexity === 0) && index > complexity)) {
-          acc.push(Math.floor(value) * 0.8);
-        }
-        index++;
-        return acc;
-      }, []);
-      lengths[0] = getRandomInt(lengths[1] - 10, lengths[1]);
-      index = 0;
       var angleStep = (Math.PI) / lengths.length;
+      index = 0;
       var points = lengths.reduce((acc, length, index) => {
         const theta = index * angleStep;
         length = length * ratio + lengthOffset
@@ -200,12 +216,13 @@ window.onload = function () {
       }, []);
 
       points = points.concat(invertedPoints.reverse());
+      points.splice(points.length - 1, 1)
 
       const redPoints = adjustPoints(points);
 
       const redPath = spline(redPoints);
 
-      const whitePoints = adjustPoints(points, 0.85);
+      const whitePoints = adjustPoints(points, 0.90);
       const whitePath = spline(whitePoints);
       redHistory.push(redPath);
 
