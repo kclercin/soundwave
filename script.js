@@ -1,7 +1,7 @@
 window.onload = function () {
   "use strict";
   var redMask = $('.red');
-  var ratio = 1.1;
+  var ratio = 1;
   var whiteMask = $('.white');
   var blueMask = $('.blue');
   var complexity = 15;
@@ -137,7 +137,6 @@ window.onload = function () {
     var analyser = audioContent.createAnalyser();
     audioStream.connect(analyser);
     analyser.fftSize = 2048;
-    analyser.maxDecibels = 110;
 
     var frequencyArray = new Uint8Array(analyser.frequencyBinCount);
 
@@ -156,26 +155,6 @@ window.onload = function () {
         return acc;
       }, [])
     };
-    function average(data) {
-        var sum = data.reduce(function(sum, value) {
-            return sum + value;
-        }, 0);
-        var avg = sum / data.length;
-        return avg;
-    }
-
-    function smooth(values, alpha = 1) {
-        var weighted = average(values) * alpha;
-        var smoothed = [];
-        for (var i in values) {
-            var curr = values[i];
-            var prev = smoothed[i - 1] || values[values.length - 1];
-            var next = curr || values[0];
-            var improved = Number(average([weighted, prev, curr, next]).toFixed(2));
-            smoothed.push(improved);
-        }
-        return smoothed;
-    }
 
 
     var doDraw = function () {
@@ -185,7 +164,7 @@ window.onload = function () {
       var index = 0;
       var ls = [];
       for(var i = 0; i < numPoints; i++) {
-          ls.push(Math.floor(frequencyArray[i]) * 0.7);
+          ls.push(Math.floor(frequencyArray[i]) * 0.3);
       }
       var lengths = []
       console.log(ls.length)
